@@ -24,7 +24,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from libqtile import bar, layout, widget
+from qtile_extras import widget
+from qtile_extras.widget.decorations import PowerLineDecoration
+from libqtile import bar, layout
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
@@ -38,52 +40,54 @@ terminal = guess_terminal()
 disp_red="enp0s3"
 
 # Colores
-## barra superior
-colorbarra = "#1A1B26"
-tamanobarra = 20
-fuente_pred = "Ubuntu Mono Nerd Font"
-tamano_fuente = 16
+colores = {
+    # Barra superior
+    'colorbarra':"#1A1B26",
+    # Grupo de escritorios
+    'color_activo':"#ffffff",
+    'color_inactivo':"#EB3153",
+    # Titulo de ventana
+    'colordetexto1':"#ffffff",
+    # Colores grupo 1
+    'colorfgg1':"#8798E8",
+    # Colores grupo 2
+    'colorbgg2':"#FF8239",
+    'colorfgg2':"#1A1B26", # colorbarra
+    'color_actualizaciones':"#CC0000",
+    # Colores grupo 3
+    'colorfgg3':"#1A1B26", #colorbarra
+    'colorbgg3':"#8CD240",
+    # Colores grupo 4
+    'colorfgg4':"#1A1B26", #colorbarra
+    'colorbgg4':"#EB3153",
+}
 
-# grupo de escritorios
-color_activo="#ffffff"
-color_inactivo="#F7768E"
+## barra superior
+fuente_pred = "Ubuntu Mono Nerd Font"
+tamanobarra = 24
+tamano_fuente = 16
+## grupo de escritorios
 tamano_iconos=20
 
-# titulo de ventana
-colordetexto1 = "#ffffff"
-
-# Colores grupo 1
-colorfgg1 = "#8798E8"
-
-
-# Colores grupo 2
-colorbgg2 = "#FF8239"
-colorfgg2 = colorbarra
-color_actualizaciones = "#CC0000"
-
-# Colores grupo 3
-colorfgg3 = colorbarra
-colorbgg3 = "#8CD240"
-
-# Colores grupo 4
-colorfgg4 = colorbarra
-colorbgg4 = "#EB3153" # color grupo 4
-
 ## Funciones
+
+# Denfinimos las decoraciones qtile_extras
+powerline = {
+    "decorations":[
+        PowerLineDecoration(
+        path="arrow_right"
+        )
+    ]
+}
+
 ### Funcion de separador
-def funseparador():
+def funseparador(padd):
     return widget.Sep(
         linewidth=0,
-        padding=10,
+        padding=padd, #10,
         #foreground=,
-        background=colorbarra
-    )
-def separadordel():
-    return widget.Sep(
-        linewidth=0,
-        padding=3,
-        #foreground=,
-        background=colorbarra
+        background=colores['colorbarra'],
+        **powerline,
     )
 
 ### Funciones para rectangulo
@@ -98,7 +102,7 @@ def punta(color, tipo):
         text=icono,
         fontsize=tamanobarra +5,
         foreground=color,
-        background=colorbarra,
+        background=colores['colorbarra'],
         padding=pdg,
         )
 def pt_icono(icono, colorfg, colorbg):
@@ -169,27 +173,42 @@ keys = [
     Key([mod, "shift"], "s", lazy.spawn("scrot -s -f")),
 ]
 
-groups = [Group(i) for i in [
-    "  ", "  ", "  ", " 󰨞 ", "  ", "  "
-]]
+#groups = [Group(i) for i in [
+#    "", "", "", "󰨞", "", ""
+#]]
+__groups = {
+    1: Group(""),
+    2: Group("", matches=[Match(wm_class=["firefox"])]),
+    3: Group(""),
+    4: Group("󰨞", matches=[Match(wm_class=["code"])]),
+    5: Group("", matches=[Match(wm_class=["pcmanfm"])]),
+    6: Group(""),
+}
 
-for i, group in enumerate (groups):
-    numeroEscritorio=str(i+1)
+groups = [__groups[i] for i in __groups]
+
+def get_group_key(name):
+    return [k for k, g in __groups.items() if g.name == name][0] 
+
+for i in groups:
+    #numeroEscritorio=str(i+1)
     keys.extend(
         [
             # mod1 + letter of group = switch to group
             Key(
                 [mod],
-                numeroEscritorio,
-                lazy.group[group.name].toscreen(),
-                desc="Switch to group {}".format(group.name),
+                #numeroEscritorio,
+                str(get_group_key(i.name)),
+                lazy.group[i.name].toscreen(),
+                desc="Switch to group {}".format(i.name),
             ),
             # mod1 + shift + letter of group = switch to & move focused window to group
             Key(
                 [mod, "shift"],
-                numeroEscritorio,
-                lazy.window.togroup(group.name, switch_group=True),
-                desc="Switch to & move focused window to group {}".format(group.name),
+                #numeroEscritorio,
+                str(get_group_key(i.name)),
+                lazy.window.togroup(i.name, switch_group=True),
+                desc="Switch to & move focused window to group {}".format(i.name),
             ),
             # Or, use below if you prefer not to switch to that group.
             # # mod1 + shift + letter of group = move focused window to group
@@ -208,19 +227,19 @@ layouts = [
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
-    layout.Floating(),
-    layout.Matrix(
-        #border_focus_stack=["#d75f5f", "#8f3d3d"], 
-        border_width=4,
-        margin=4,
-    ),
-    # layout.MonadTall(),
-    # layout.MonadWide(),
-    # layout.RatioTile(),
-    # layout.Tile(),
-    # layout.TreeTab(),
-    # layout.VerticalTile(),
-    # layout.Zoomy(),
+    #layout.Floating(),
+    #layout.Matrix(      
+    #    #border_focus_stack=["#d75f5f", "#8f3d3d"], 
+    #    border_width=1,
+    #    margin=4,
+    #),
+    #layout.MonadTall(),
+    layout.MonadWide(),
+    #layout.RatioTile(),
+    layout.Tile(),
+    layout.TreeTab(),
+    #layout.VerticalTile(),
+    #layout.Zoomy(),
 ]
 
 widget_defaults = dict(
@@ -236,22 +255,26 @@ screens = [
             [
                 #widget.CurrentLayout(),
                 widget.GroupBox(
-                    active=color_activo,
+                    active=colores['color_activo'],
                     border_width=1,
                     disable_drag=True,
                     fontsize=tamano_iconos,
                     #foreground="#ffffff"
                     highlight_method='block',
-                    inactive=color_inactivo,
+                    inactive=colores['color_inactivo'],
                     urgent_alert_method="block",
                     urgent_border="#F8713B",
-                    padding_x=0,
-                    padding_y=10,
+                    magin_x=-10,
+                    margin_y=3,
+                    padding_x=8,
+                    padding_y=5,
                 ),
-                funseparador(),
-                widget.Prompt(),
+
+                funseparador(10),
+
+                #widget.Prompt(),
                 widget.WindowName(
-                    foreground=colordetexto1,
+                    foreground=colores['colordetexto1'],
                 ),
                 #widget.Chord(
                 #    chords_colors={
@@ -266,76 +289,91 @@ screens = [
                                 
                 widget.Systray(
                     icon_size=tamano_iconos,
-                    background=colorbarra,
+                    #background=colores['colorbarra'],
                 ),
 
-                funseparador(),
+                funseparador(10),
 
                 # Grupo 1
                 #punta(colorfgg1, 0),
-                pt_icono("  ", colorbarra, colorfgg1),
+                pt_icono("  ", colores['colorbarra'], colores['colorfgg1']),
                 widget.Memory(
-                    foreground = colorbarra,
-                    background = colorfgg1,
+                    foreground = colores['colorbarra'],
+                    background = colores['colorfgg1'],
                 ),
-                pt_icono(" 󰚰", colorbarra, colorfgg1),
+                pt_icono(" 󰚰", colores['colorbarra'], colores['colorfgg1']),
                 widget.CheckUpdates(
-                    background=colorfgg1,
-                    colour_have_update=color_actualizaciones,
-                    colour_no_update=colorbarra,
+                    background=colores['colorfgg1'],
+                    colour_have_update=colores['color_actualizaciones'],
+                    colour_no_update=colores['colorbarra'],
                     no_update_string="0",
                     display_format="{updates}",
                     update_interval=1800,
                     distro="Arch_checkupdates",
+                    **powerline,
                 ),
                 #punta(colorfgg1, 1),
-                separadordel(),
-
+                
+                #funseparador(3),
+                
                 # Grupo 2
                 #punta(colorbgg2, 0),
-                pt_icono("󰓅 ", colorfgg2, colorbgg2),
+                #pt_icono("󰓅 ", colores['colorfgg2'], colores['colorbgg2']),
                 widget.Net(
-                    foreground=colorfgg2,
-                    background=colorbgg2,
+                    foreground=colores['colorfgg2'],
+                    background=colores['colorbgg2'],
                     format="{down}  {up}",
                     interface=disp_red,
                     use_bits=True,
+                    **powerline,
                 ),
                 #punta(colorbgg2, 1),
-                separadordel(),
+
+                #funseparador(3),
+                #separadordel(),
 
                 # Grupo 3
                 #punta(colorbgg3, 0),
                 widget.Clock(
-                    background=colorbgg3,
-                    foreground=colorfgg3,
+                    background=colores['colorbgg3'],
+                    foreground=colores['colorfgg3'],
                     format="%Y-%m-%d %a %I:%M %p",
+                    #**powerline,
                 ),
-                pt_icono("  ", colorfgg3, colorbgg3),
+                pt_icono("  ", colores['colorfgg3'], colores['colorbgg3']),
                 widget.PulseVolume(
-                    foreground=colorfgg3,
-                    background=colorbgg3,
+                    foreground=colores['colorfgg3'],
+                    background=colores['colorbgg3'],
                     limit_max_volume=True,
                     fontsize=tamano_fuente,
+                    **powerline,
                 ),
                 #punta(colorbgg3, 1),
-                separadordel(),
+                #funseparador(3),
+                #separadordel(),
 
                 # Grupo 4
-                punta(colorbgg4, 0),
+                #punta(colores['colorbgg4'], 0),
                 widget.CurrentLayoutIcon(
                     #foreground=colorfgg4,
-                    background=colorbgg4,
+                    background=colores['colorbgg4'],
                     scale=0.7,
                 ),                
                 widget.CurrentLayout(
-                    foreground=colorfgg4,
-                    background=colorbgg4,
+                    #foreground=colores['colorfgg4'],
+                    background=colores['colorbgg4'],
                 ),
+                #widget.QuickExit(
+                #    default_text='[X]',
+                #    countdown_format='[{}]',
+                #    foreground=colores['colorfgg4'],
+                #    background=colores['colorbgg4'],
+                #),
                 #punta(colorbgg4, 1),
             ],
             size = tamanobarra,
-            background = colorbarra,
+            background = colores['colorbarra'],
+            opacity=1,
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),

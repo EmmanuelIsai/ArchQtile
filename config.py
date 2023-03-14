@@ -30,14 +30,21 @@ from libqtile import bar, layout
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
-
 import os
 
 mod = "mod4"
-terminal = guess_terminal()
+terminal = "alacritty"
 
 # Modificaciones
-disp_red="enp0s3"
+# NOTA: Antes de ejecutar esta configuracion, ejecuta primero
+# 1packages.sh y 2configextras.sh o bien asegurate de tener los
+# paquetes y aplicaciones listadas en ambos script
+
+# Configurar antes de ejecutar el archivo .py
+#============================================
+disp_red="enp0s3" # Cambiar el nombre del dispositivo de red
+user="von" # Nombre de usuario del dispositivo
+#============================================
 
 # Colores
 colores = {
@@ -70,12 +77,11 @@ tamano_fuente = 16
 tamano_iconos=20
 
 ## Funciones
-
-# Denfinimos las decoraciones qtile_extras
+# Definimos las decoraciones qtile_extras
 powerline = {
     "decorations":[
         PowerLineDecoration(
-        path="arrow_right"
+        path="forward_slash"
         )
     ]
 }
@@ -91,26 +97,12 @@ def funseparador(padd):
     )
 
 ### Funciones para rectangulo
-def punta(color, tipo):
-    if tipo == 0: # punta izquierda
-        icono="" # nf-ple-left_half_circle_thick
-        pdg = -1
-    else: # derecha
-        icono="" # nf-ple-right_half_circle_thick
-        pdg = -1
-    return widget.TextBox(
-        text=icono,
-        fontsize=tamanobarra +5,
-        foreground=color,
-        background=colores['colorbarra'],
-        padding=pdg,
-        )
 def pt_icono(icono, colorfg, colorbg):
     return widget.TextBox(
         text=icono,
         foreground=colorfg,
         background=colorbg,
-        fontsize=tamano_fuente +3,
+        fontsize=tamano_fuente +3
     )
 
 keys = [
@@ -148,7 +140,7 @@ keys = [
     Key([mod], "Return", lazy.spawn("alacritty"), desc="Launch terminal"),
 
     # abrir menu rofi
-    Key([mod], "m", lazy.spawn("bash /home/von/.config/rofi/launchers/type-7/launcher.sh"), desc="Abrir menu rofi"),
+    Key([mod], "m", lazy.spawn("bash /home/"+user+"/.config/rofi/launchers/type-7/launcher.sh"), desc="Abrir menu rofi"),
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
@@ -173,14 +165,11 @@ keys = [
     Key([mod, "shift"], "s", lazy.spawn("scrot -s -f")),
 ]
 
-#groups = [Group(i) for i in [
-#    "", "", "", "󰨞", "", ""
-#]]
 __groups = {
-    1: Group(""),
+    1: Group("", layout="tile"),
     2: Group("", matches=[Match(wm_class=["firefox"])]),
-    3: Group(""),
-    4: Group("󰨞", matches=[Match(wm_class=["code"])]),
+    3: Group("", layout="tile"),
+    4: Group("󰨞", matches=[Match(wm_class=["code-oss"])]),
     5: Group("", matches=[Match(wm_class=["pcmanfm"])]),
     6: Group(""),
 }
@@ -191,13 +180,11 @@ def get_group_key(name):
     return [k for k, g in __groups.items() if g.name == name][0] 
 
 for i in groups:
-    #numeroEscritorio=str(i+1)
     keys.extend(
         [
             # mod1 + letter of group = switch to group
             Key(
                 [mod],
-                #numeroEscritorio,
                 str(get_group_key(i.name)),
                 lazy.group[i.name].toscreen(),
                 desc="Switch to group {}".format(i.name),
@@ -205,7 +192,6 @@ for i in groups:
             # mod1 + shift + letter of group = switch to & move focused window to group
             Key(
                 [mod, "shift"],
-                #numeroEscritorio,
                 str(get_group_key(i.name)),
                 lazy.window.togroup(i.name, switch_group=True),
                 desc="Switch to & move focused window to group {}".format(i.name),
@@ -219,25 +205,53 @@ for i in groups:
 
 layouts = [
     layout.Columns(
-        border_focus_stack=["#d75f5f", "#8f3d3d"], 
-        border_width=4,
-        margin=4,
+        border_focus=colores['colorfgg1'],
+        border_normal=colores['colorbarra'],
+        border_focus_stack=["#ffffff", "#ffffff"],
+        border_width=3,
+        margin=[4, 4, 4, 4],
+        margin_on_single = 6,
     ),
-    layout.Max(),
+    layout.Max(
+        margin=6,
+    ),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
-    #layout.Floating(),
-    #layout.Matrix(      
+    # layout.Floating(),
+    # layout.Matrix(      
     #    #border_focus_stack=["#d75f5f", "#8f3d3d"], 
     #    border_width=1,
     #    margin=4,
     #),
     #layout.MonadTall(),
-    layout.MonadWide(),
+    layout.MonadWide(
+        border_focus=colores["colorfgg1"],
+        border_normal=colores["colorbarra"],
+        border_width=1,
+        margin=2,
+    ),
     #layout.RatioTile(),
-    layout.Tile(),
-    layout.TreeTab(),
+    layout.Tile(
+        border_focus=colores["colorfgg1"],
+        border_normal=colores["colorbarra"],
+        expand=False,
+        margin=4,
+        shift_windows=True,
+    ),
+    layout.TreeTab(
+        active_bg=colores['colorfgg1'],
+        active_fg=colores['colorbarra'],
+        bg_color=colores['colorbarra'],
+        border_width=1,
+        font=fuente_pred,
+        fontsize=tamano_fuente,
+        inactive_bg=colores['colorbarra'],
+        inactive_fg=colores['colorfgg1'],
+        margin_left=2,
+        sections=['Workspace'],
+        section_fontsize=tamano_fuente,
+    ),
     #layout.VerticalTile(),
     #layout.Zoomy(),
 ]
@@ -245,7 +259,7 @@ layouts = [
 widget_defaults = dict(
     font=fuente_pred,
     fontsize=tamano_fuente,
-    padding=1,
+    padding=5,
 )
 extension_defaults = widget_defaults.copy()
 
@@ -253,13 +267,11 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-                #widget.CurrentLayout(),
                 widget.GroupBox(
                     active=colores['color_activo'],
                     border_width=1,
                     disable_drag=True,
                     fontsize=tamano_iconos,
-                    #foreground="#ffffff"
                     highlight_method='block',
                     inactive=colores['color_inactivo'],
                     urgent_alert_method="block",
@@ -276,17 +288,7 @@ screens = [
                 widget.WindowName(
                     foreground=colores['colordetexto1'],
                 ),
-                #widget.Chord(
-                #    chords_colors={
-                #        "launch": ("#ff0000", "#ffffff"),
-                #    },
-                #    name_transform=lambda name: name.upper(),
-                #),
-                #widget.TextBox("default config", name="default"),
-                #widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-                # widget.StatusNotifier(),
-                                
+                                               
                 widget.Systray(
                     icon_size=tamano_iconos,
                     #background=colores['colorbarra'],
@@ -294,82 +296,87 @@ screens = [
 
                 funseparador(10),
 
-                # Grupo 1
-                #punta(colorfgg1, 0),
-                pt_icono("  ", colores['colorbarra'], colores['colorfgg1']),
-                widget.Memory(
-                    foreground = colores['colorbarra'],
-                    background = colores['colorfgg1'],
-                ),
-                pt_icono(" 󰚰", colores['colorbarra'], colores['colorfgg1']),
-                widget.CheckUpdates(
+                # GRUPO 1
+                #=========================================================== 
+                widget.Sep(
+                    linewidth=0,
+                    padding=20,
                     background=colores['colorfgg1'],
-                    colour_have_update=colores['color_actualizaciones'],
-                    colour_no_update=colores['colorbarra'],
-                    no_update_string="0",
-                    display_format="{updates}",
-                    update_interval=1800,
-                    distro="Arch_checkupdates",
                     **powerline,
                 ),
-                #punta(colorfgg1, 1),
+                #===========================================================
                 
-                #funseparador(3),
-                
-                # Grupo 2
-                #punta(colorbgg2, 0),
-                #pt_icono("󰓅 ", colores['colorfgg2'], colores['colorbgg2']),
-                widget.Net(
-                    foreground=colores['colorfgg2'],
-                    background=colores['colorbgg2'],
-                    format="{down}  {up}",
-                    interface=disp_red,
-                    use_bits=True,
-                    **powerline,
-                ),
-                #punta(colorbgg2, 1),
-
-                #funseparador(3),
-                #separadordel(),
-
-                # Grupo 3
-                #punta(colorbgg3, 0),
+                # GRUPO 2
+                #===========================================================
                 widget.Clock(
-                    background=colores['colorbgg3'],
-                    foreground=colores['colorfgg3'],
+                    background=colores['colorbgg2'],
+                    foreground=colores['colorfgg2'],
                     format="%Y-%m-%d %a %I:%M %p",
-                    #**powerline,
+                    **powerline,
                 ),
-                pt_icono("  ", colores['colorfgg3'], colores['colorbgg3']),
+                #===========================================================
+
+                # GRUPO 3
+                #===========================================================
+                pt_icono("", colores['colorfgg3'], colores['colorbgg3']),
+                widget.Memory(
+                    foreground = colores['colorfgg3'],
+                    background = colores['colorbgg3'],
+                    measure_mem='M',
+                    format='{MemUsed: .0f}{mm}',
+                ),
+
+                pt_icono(" 󰚰", colores['colorfgg3'], colores['colorbgg3']),
+                widget.CheckUpdates(
+                    background=colores['colorbgg3'],
+                    colour_have_updates=colores['color_actualizaciones'],
+                    colour_no_updates=colores['colorbarra'],
+                    no_update_string="Up:0",
+                    display_format="Up:{updates}",
+                    update_interval=30,
+                    distro="Arch_checkupdates",
+                ),
+
+                pt_icono(" ", colores['colorfgg3'], colores['colorbgg3']),
                 widget.PulseVolume(
                     foreground=colores['colorfgg3'],
                     background=colores['colorbgg3'],
                     limit_max_volume=True,
                     fontsize=tamano_fuente,
+                ),
+
+                widget.Battery(
+                    foreground = colores['colorfgg3'],
+                    background = colores['colorbgg3'],
+                    charge_char='󰂄',
+                    discharge_char='󰂁',
+                    empty_char='󰁺',
+                    font=fuente_pred,
+                    format='{char} {percent:2.0%}',
                     **powerline,
                 ),
-                #punta(colorbgg3, 1),
-                #funseparador(3),
-                #separadordel(),
+                #===========================================================
 
-                # Grupo 4
-                #punta(colores['colorbgg4'], 0),
+                # GRUPO 4
+                #===========================================================
                 widget.CurrentLayoutIcon(
                     #foreground=colorfgg4,
                     background=colores['colorbgg4'],
                     scale=0.7,
-                ),                
+                ),
+
                 widget.CurrentLayout(
                     #foreground=colores['colorfgg4'],
                     background=colores['colorbgg4'],
                 ),
-                #widget.QuickExit(
-                #    default_text='[X]',
-                #    countdown_format='[{}]',
-                #    foreground=colores['colorfgg4'],
-                #    background=colores['colorbgg4'],
-                #),
-                #punta(colorbgg4, 1),
+
+                widget.QuickExit(
+                    default_text='[X]',
+                    countdown_format='[{}]',
+                    foreground=colores['colorfgg4'],
+                    background=colores['colorbgg4'],
+                ),
+                #===========================================================
             ],
             size = tamanobarra,
             background = colores['colorbarra'],
@@ -426,8 +433,8 @@ wl_input_rules = None
 wmname = "LG3D"
 
 auto = [
-    "bash /home/von/.screenlayout/resolucion.sh",
-    "nitrogen --random /home/von/Imagenes --set-zoom-fill &"
+    #"bash /home/"+user+"/.screenlayout/resolucion.sh", # configuracion para ajustar la resolucion de VirtualMachine
+    "nitrogen --random /home/"+user+"/Imagenes --set-zoom-fill &",
 ]
 
 for x in auto:

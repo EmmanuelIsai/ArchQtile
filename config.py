@@ -24,6 +24,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import temas
 from qtile_extras import widget
 from qtile_extras.widget.decorations import PowerLineDecoration
 from libqtile import bar, layout
@@ -47,27 +48,9 @@ user="von" # Nombre de usuario del dispositivo
 #============================================
 
 # Colores
-colores = {
-    # Barra superior
-    'colorbarra':"#1A1B26",
-    # Grupo de escritorios
-    'color_activo':"#ffffff",
-    'color_inactivo':"#EB3153",
-    # Titulo de ventana
-    'colordetexto1':"#ffffff",
-    # Colores grupo 1
-    'colorfgg1':"#8798E8",
-    # Colores grupo 2
-    'colorbgg2':"#FF8239",
-    'colorfgg2':"#1A1B26", # colorbarra
-    'color_actualizaciones':"#CC0000",
-    # Colores grupo 3
-    'colorfgg3':"#1A1B26", #colorbarra
-    'colorbgg3':"#8CD240",
-    # Colores grupo 4
-    'colorfgg4':"#1A1B26", #colorbarra
-    'colorbgg4':"#EB3153",
-}
+# Temas de colores disponibles: TokyoNight, ArchRed, ArchBlue, ArchCold,
+# TokyoNight2
+colores = temas.ArchRed()
 
 ## barra superior
 fuente_pred = "Ubuntu Mono Nerd Font"
@@ -78,10 +61,20 @@ tamano_iconos=20
 
 ## Funciones
 # Definimos las decoraciones qtile_extras
+path_op = {
+    1:'arrow_left',
+    2:'arrow_right',
+    3:'rounded_left', 
+    4:'rounded_right', 
+    5:'forward_slash',
+    6:'back_slash',
+    7:'zig_zag',
+}
+
 powerline = {
     "decorations":[
         PowerLineDecoration(
-        path="forward_slash"
+        path=path_op[2],
         )
     ]
 }
@@ -140,7 +133,7 @@ keys = [
     Key([mod], "Return", lazy.spawn("alacritty"), desc="Launch terminal"),
 
     # abrir menu rofi
-    Key([mod], "m", lazy.spawn("bash /home/"+user+"/.config/rofi/launchers/type-7/launcher.sh"), desc="Abrir menu rofi"),
+    Key([mod], "m", lazy.spawn("bash /home/"+user+"/.config/rofi/launchers/type-3/launcher.sh"), desc="Abrir menu rofi"),
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
@@ -169,7 +162,7 @@ __groups = {
     1: Group("", layout="tile"),
     2: Group("", matches=[Match(wm_class=["firefox"])]),
     3: Group("", layout="tile"),
-    4: Group("󰨞", matches=[Match(wm_class=["code-oss"])]),
+    4: Group("󰨞", matches=[Match(wm_class=["code"])]),
     5: Group("", matches=[Match(wm_class=["pcmanfm"])]),
     6: Group(""),
 }
@@ -208,7 +201,7 @@ layouts = [
         border_focus=colores['colorfgg1'],
         border_normal=colores['colorbarra'],
         border_focus_stack=["#ffffff", "#ffffff"],
-        border_width=3,
+        border_width=2,
         margin=[4, 4, 4, 4],
         margin_on_single = 6,
     ),
@@ -268,6 +261,8 @@ screens = [
         top=bar.Bar(
             [
                 widget.GroupBox(
+                    background=colores["colorbggv"],
+                    #block_highlight_text_color="#f8713b",
                     active=colores['color_activo'],
                     border_width=1,
                     disable_drag=True,
@@ -276,10 +271,12 @@ screens = [
                     inactive=colores['color_inactivo'],
                     urgent_alert_method="block",
                     urgent_border="#F8713B",
+                    this_current_screen_border=colores["colorseleccion"],
                     magin_x=-10,
                     margin_y=3,
                     padding_x=8,
                     padding_y=5,
+                    **powerline,
                 ),
 
                 funseparador(10),
@@ -330,7 +327,7 @@ screens = [
                 widget.CheckUpdates(
                     background=colores['colorbgg3'],
                     colour_have_updates=colores['color_actualizaciones'],
-                    colour_no_updates=colores['colorbarra'],
+                    colour_no_updates=colores['colorfgg3'],
                     no_update_string="Up:0",
                     display_format="Up:{updates}",
                     update_interval=30,
@@ -373,7 +370,7 @@ screens = [
                 widget.QuickExit(
                     default_text='[X]',
                     countdown_format='[{}]',
-                    foreground=colores['colorfgg4'],
+                    #foreground=colores['colorfgg4'],
                     background=colores['colorbgg4'],
                 ),
                 #===========================================================

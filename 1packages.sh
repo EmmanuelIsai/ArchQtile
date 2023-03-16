@@ -3,6 +3,8 @@
 # Instala los paquetes necesarios para funcionamiento del archivo de
 # configuracion 
 
+cd /home/*
+
 sudo pacman -Syu
 sudo pacman -S firefox rofi which nitrogen pipewire ttf-dejavu
 sudo pacman -S ttf-liberation noto-fonts pavucontrol pamixer arandr

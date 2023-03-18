@@ -16,8 +16,8 @@ mkdir Imagenes
 curl -O https://r4.wallpaperflare.com/wallpaper/625/89/275/archlinux-digital-art-linux-arch-linux-tech-hd-wallpaper-1f0cb881ced8a6f444c7620593386e99.jpg
 mv archlinux-digital-art-linux-arch-linux-tech-hd-wallpaper-1f0cb881ced8a6f444c7620593386e99.jpg Imagenes
 curl -O https://images2.alphacoders.com/122/1224122.png
-sudo cp images /usr/share/pixmaps/ 
-mv images Imagenes
+sudo cp 1224122.png /usr/share/pixmaps/ 
+mv 1224122.png Imagenes
 
 cd $HOME
 git clone https://aur.archlinux.org/yay.git

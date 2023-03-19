@@ -19,6 +19,16 @@ curl -O https://images2.alphacoders.com/122/1224122.png
 sudo cp 1224122.png /usr/share/pixmaps/ 
 mv 1224122.png Imagenes
 
+mkdir .iconos
+curl -O https://img.icons8.com/material/96/FFFFFF/shutdown--v1.png
+curl -O https://img.icons8.com/material/96/FFFFFF/reboot.png
+curl -O https://img.icons8.com/material/96/FFFFFF/lock--v1.png
+mv shutdown--v1.png shutdown.png
+mv lock--v1.png lock.png
+mv shutdown.png .iconos/
+mv lock.png .iconos/
+mv reboot.png .iconos/
+
 cd $HOME
 git clone https://aur.archlinux.org/yay.git
 cd yay
@@ -29,7 +39,7 @@ cd $HOME
 sudo pacman -Syu
 yay -Syu
 # Instala qtile extras para agregar modificaciones visuales a qtile
-yay -S qtile-extras-git ttf-nerd-fonts-symbols-2048-em-mono ttf-ubuntu-mono-nerd ttf-nerd-fonts-symbols-common
+yay qtile-extras-git ttf-nerd-fonts-symbols-2048-em-mono ttf-ubuntu-mono-nerd ttf-nerd-fonts-symbols-common
 
 cd $HOME
 # Instala temas para el menu de aplicaciones rofi
@@ -38,6 +48,6 @@ cd rofi
 chmod +x setup.sh
 ./setup.sh
 
-cd $HOME
+#cd $HOME
 # Instala oh my bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"

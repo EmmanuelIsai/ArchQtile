@@ -24,14 +24,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import os
 import temas
+
 from qtile_extras import widget
 from qtile_extras.widget.decorations import PowerLineDecoration
+from qtile_extras.popup.toolkit import (PopupRelativeLayout, PopupImage, PopupText)
+
 from libqtile import bar, layout
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
-import os
 
 mod = "mod4"
 terminal = "alacritty"
@@ -50,7 +53,7 @@ user="von" # Nombre de usuario del dispositivo
 # Colores
 # Temas de colores disponibles: TokyoNight, ArchRed, ArchBlue, ArchCold,
 # TokyoNight2
-colores = temas.ArchRed()
+colores = temas.ArchBlue()
 
 ## barra superior
 fuente_pred = "Ubuntu Mono Nerd Font"
@@ -74,7 +77,7 @@ path_op = {
 powerline = {
     "decorations":[
         PowerLineDecoration(
-        path=path_op[2],
+        path=path_op[5],
         )
     ]
 }
@@ -97,6 +100,86 @@ def pt_icono(icono, colorfg, colorbg):
         background=colorbg,
         fontsize=tamano_fuente +3
     )
+
+### Funcion de menu de apagado
+def show_power_menu(qtile):
+
+    controls = [
+        PopupImage(
+            filename="/home/"+user+"/.iconos/lock.png",
+            pos_x=0.15,
+            pos_y=0.1,
+            width=0.1,
+            height=0.5,
+            mouse_callbacks={
+                "Button1": lazy.spawn("dm-tool lock")
+            }
+        ),
+        PopupImage(
+            filename="/home/"+user+"/.iconos/reboot.png",
+            pos_x=0.45,
+            pos_y=0.1,
+            width=0.1,
+            height=0.5,
+            mouse_callbacks={
+                "Button1": lazy.spawn("reboot")
+            }
+        ),
+        PopupImage(
+            filename="/home/"+user+"/.iconos/shutdown.png",
+            pos_x=0.75,
+            pos_y=0.1,
+            width=0.1,
+            height=0.5,
+            highlight="A00000",
+            mouse_callbacks={
+                "Button1": lazy.shutdown()
+            }
+        ),
+        PopupText(
+            text="Lock",
+            pos_x=0.1,
+            pos_y=0.7,
+            width=0.2,
+            height=0.2,
+            h_align="center",
+	    foreground=colores["color_inactivo"],
+        ),
+        PopupText(
+            text="Reboot",
+            pos_x=0.4,
+            pos_y=0.7,
+            width=0.2,
+            height=0.2,
+            h_align="center",
+	    foreground=colores["color_inactivo"],
+        ),
+        PopupText(
+            text="Shutdown",
+            pos_x=0.7,
+            pos_y=0.7,
+            width=0.2,
+            height=0.2,
+            h_align="center",
+	    foreground=colores["color_inactivo"],
+        ),
+    ]
+
+    layout = PopupRelativeLayout(
+        qtile,
+        width=500,
+        height=150,
+        controls=controls,
+        background=colores['colorfgg1'],
+        initial_focus=None,
+	opacity=0.5,
+    )
+
+    layout.show(centered=True)
+
+#===========================
+
+
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -156,6 +239,9 @@ keys = [
     # Captura de pantalla
     Key([mod, "control"], "s", lazy.spawn("scrot")),
     Key([mod, "shift"], "s", lazy.spawn("scrot -s -f")),
+
+    # Muestra menu flotante de apagado
+    Key([mod, "shift"], "q", lazy.function(show_power_menu)),
 ]
 
 __groups = {
@@ -285,17 +371,16 @@ screens = [
                 widget.WindowName(
                     foreground=colores['colordetexto1'],
                 ),
-                                               
-                widget.Systray(
-                    icon_size=tamano_iconos,
-                    #background=colores['colorbarra'],
-                ),
 
                 funseparador(10),
 
                 # GRUPO 1
                 #=========================================================== 
-                widget.Sep(
+                widget.Systray(
+		    icon_size=tamano_iconos,
+		    background=colores['colorfgg1'],
+		),
+		widget.Sep(
                     linewidth=0,
                     padding=20,
                     background=colores['colorfgg1'],
@@ -383,6 +468,7 @@ screens = [
         ),
     ),
 ]
+       
 
 # Drag floating layouts.
 mouse = [
@@ -432,6 +518,7 @@ wmname = "LG3D"
 auto = [
     #"bash /home/"+user+"/.screenlayout/resolucion.sh", # configuracion para ajustar la resolucion de VirtualMachine
     "nitrogen --random /home/"+user+"/Imagenes --set-zoom-fill &",
+    "nm-applet &"
 ]
 
 for x in auto:

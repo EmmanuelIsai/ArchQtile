@@ -7,5 +7,4 @@ Por agregar:
 - Iconos y notificaciones de dispositivos usb
 - Configuraciones, iconos y notificaciones de bluetooth
 - Slider de brillo
-- Menu de reiniciar, suspender y apagar dentro del escritorio
 

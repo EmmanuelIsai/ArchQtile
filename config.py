@@ -349,6 +349,11 @@ screens = [
     Screen(
         top=bar.Bar(
             [
+                widget.CurrentLayout(
+                    background=colores['colorbgg4'],
+                    **powerline,
+                ),
+                
                 widget.GroupBox(
                     background=colores["colorbggv"],
                     #block_highlight_text_color="#f8713b",
@@ -376,15 +381,11 @@ screens = [
                 ),
 
                 #funseparador(10),
-		widget.Systray(
-                    icon_size=tamano_iconos,
-                #    background=colores['colorfgg1'],
-                ),
-		funseparador(10),
+		        funseparador(10),
 
                 # GRUPO 1
                 #=========================================================== 
-		widget.Sep(
+		        widget.Sep(
                     linewidth=0,
                     padding=20,
                     background=colores['colorfgg1'],
@@ -394,67 +395,49 @@ screens = [
                 
                 # GRUPO 2
                 #===========================================================
-                widget.Clock(
+                pt_icono("", colores['colorfgg2'], colores['colorbgg2']),
+                widget.Memory(
+                    foreground = colores['colorfgg2'],
+                    background = colores['colorbgg2'],
+                    measure_mem='M',
+                    format='{MemUsed: .0f}{mm}',
+                ),
+
+                pt_icono(" 󰚰", colores['colorfgg2'], colores['colorbgg2']),
+                widget.CheckUpdates(
                     background=colores['colorbgg2'],
-                    foreground=colores['colorfgg2'],
-                    format="%Y-%m-%d %a %I:%M %p",
+                    colour_have_updates=colores['color_actualizaciones'],
+                    colour_no_updates=colores['colorfgg2'],
+                    no_update_string="Up:0",
+                    display_format="Up:{updates}",
+                    update_interval=30,
+                    distro="Arch_checkupdates",
                     **powerline,
                 ),
                 #===========================================================
 
                 # GRUPO 3
                 #===========================================================
-                pt_icono("", colores['colorfgg3'], colores['colorbgg3']),
-                widget.Memory(
-                    foreground = colores['colorfgg3'],
-                    background = colores['colorbgg3'],
-                    measure_mem='M',
-                    format='{MemUsed: .0f}{mm}',
-                ),
-
-                pt_icono(" 󰚰", colores['colorfgg3'], colores['colorbgg3']),
-                widget.CheckUpdates(
+                widget.Clock(
                     background=colores['colorbgg3'],
-                    colour_have_updates=colores['color_actualizaciones'],
-                    colour_no_updates=colores['colorfgg3'],
-                    no_update_string="Up:0",
-                    display_format="Up:{updates}",
-                    update_interval=30,
-                    distro="Arch_checkupdates",
-                ),
-
-                pt_icono(" ", colores['colorfgg3'], colores['colorbgg3']),
-                widget.PulseVolume(
                     foreground=colores['colorfgg3'],
-                    background=colores['colorbgg3'],
-                    limit_max_volume=True,
-                    fontsize=tamano_fuente,
-		    **powerline,
+                    format="%Y-%m-%d %a %I:%M %p",
+                    **powerline,
                 ),
-
-                #widget.Battery(
-                #    foreground = colores['colorfgg3'],
-                #    background = colores['colorbgg3'],
-                #    charge_char='󰂄',
-                #    discharge_char='󰂁',
-                #    empty_char='󰁺',
-                #    font=fuente_pred,
-                #    format='{char} {percent:2.0%}',
-                #    **powerline,
-                #),
                 #===========================================================
 
                 # GRUPO 4
                 #===========================================================
-                widget.CurrentLayoutIcon(
-                    #foreground=colorfgg4,
-                    background=colores['colorbgg4'],
-                    scale=0.7,
+		        widget.Systray(
+                    icon_size=tamano_iconos,
                 ),
 
-                widget.CurrentLayout(
-                    #foreground=colores['colorfgg4'],
-                    background=colores['colorbgg4'],
+                widget.PulseVolume(
+                    foreground=colores['colordetexto1'],
+                    #background=colores['colorbgg3'],
+                    limit_max_volume=True,
+                    fontsize=tamano_fuente,
+		            **powerline,
                 ),
 
                 widget.QuickExit(
@@ -526,6 +509,7 @@ auto = [
     "nm-applet &",
     "picom &",
     "cbatticon &",
+    "volumeicon &",
 ]
 
 for x in auto:

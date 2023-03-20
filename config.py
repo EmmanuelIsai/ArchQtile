@@ -53,7 +53,7 @@ user="von" # Nombre de usuario del dispositivo
 # Colores
 # Temas de colores disponibles: TokyoNight, ArchRed, ArchBlue, ArchCold,
 # TokyoNight2
-colores = temas.ArchBlue()
+colores = temas.TokyoNight()
 
 ## barra superior
 fuente_pred = "Ubuntu Mono Nerd Font"
@@ -375,14 +375,15 @@ screens = [
                     foreground=colores['colordetexto1'],
                 ),
 
-                funseparador(10),
+                #funseparador(10),
+		widget.Systray(
+                    icon_size=tamano_iconos,
+                #    background=colores['colorfgg1'],
+                ),
+		funseparador(10),
 
                 # GRUPO 1
                 #=========================================================== 
-                widget.Systray(
-		    icon_size=tamano_iconos,
-		    background=colores['colorfgg1'],
-		),
 		widget.Sep(
                     linewidth=0,
                     padding=20,
@@ -428,18 +429,19 @@ screens = [
                     background=colores['colorbgg3'],
                     limit_max_volume=True,
                     fontsize=tamano_fuente,
+		    **powerline,
                 ),
 
-                widget.Battery(
-                    foreground = colores['colorfgg3'],
-                    background = colores['colorbgg3'],
-                    charge_char='󰂄',
-                    discharge_char='󰂁',
-                    empty_char='󰁺',
-                    font=fuente_pred,
-                    format='{char} {percent:2.0%}',
-                    **powerline,
-                ),
+                #widget.Battery(
+                #    foreground = colores['colorfgg3'],
+                #    background = colores['colorbgg3'],
+                #    charge_char='󰂄',
+                #    discharge_char='󰂁',
+                #    empty_char='󰁺',
+                #    font=fuente_pred,
+                #    format='{char} {percent:2.0%}',
+                #    **powerline,
+                #),
                 #===========================================================
 
                 # GRUPO 4
@@ -465,7 +467,7 @@ screens = [
             ],
             size = tamanobarra,
             background = colores['colorbarra'],
-            opacity=0.85,
+            opacity=0.9,
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
@@ -522,7 +524,8 @@ auto = [
     #"bash /home/"+user+"/.screenlayout/resolucion.sh", # configuracion para ajustar la resolucion de VirtualMachine
     "nitrogen --random /home/"+user+"/Imagenes --set-zoom-fill &",
     "nm-applet &",
-    "picom &"
+    "picom &",
+    "cbatticon &",
 ]
 
 for x in auto:

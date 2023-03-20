@@ -508,7 +508,8 @@ auto = [
     "nitrogen --random /home/"+user+"/Imagenes --set-zoom-fill &",
     "nm-applet &",
     "picom &",
-    "cbatticon &",
+    "cbatticon -u 5 &",
+    "udiskie -n -s -m flat &",
     "volumeicon &",
 ]
 

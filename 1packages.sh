@@ -11,6 +11,7 @@ sudo pacman -S ntfs-3g network-manager-applet xorg-xinit base-devel
 sudo pacman -S git pcmanfm glib2 gvfs lxappearance picom alacritty curl
 sudo pacman -S scrot python-psutil papirus-icon-theme gtk3 arc-gtk-theme
 sudo pacman -S lightdm lightdm-gtk-greeter xorg-server-xephyr brightnessctl
+sudo pacman -S acpi cbatticon
 
 mkdir Imagenes
 curl -O https://r4.wallpaperflare.com/wallpaper/625/89/275/archlinux-digital-art-linux-arch-linux-tech-hd-wallpaper-1f0cb881ced8a6f444c7620593386e99.jpg

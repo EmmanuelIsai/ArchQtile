@@ -55,6 +55,10 @@ cd rofi
 chmod +x setup.sh
 ./setup.sh
 
-#cd $HOME
+cd $HOME
 # Instala oh my bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
+
+cd $HOME
+sudo systemctl enable NetworkManager.service
+sudo systemctl start NetworkManager.service

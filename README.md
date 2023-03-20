@@ -3,7 +3,7 @@
 ## Estructura
 El archivo `config.py` contiene la configuracion del gestor de ventanas Qtile para Arch Linux
 
-![](https://github.com/EmmanuelIsai/ArchQtile/blob/78c9ea958e9518764a82788ec96f7ef4610fe75d/qtile.png)
+![](https://github.com/EmmanuelIsai/ArchQtile/blob/634630f1edadc1757216c16beaf80b827bd856c2/qtile.png)
 
 
 

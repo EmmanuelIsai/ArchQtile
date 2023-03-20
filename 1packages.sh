@@ -46,7 +46,7 @@ cd $HOME
 sudo pacman -Syu
 yay -Syu
 # Instala qtile extras para agregar modificaciones visuales a qtile
-yay -Sqtile-extras-git ttf-nerd-fonts-symbols-2048-em-mono ttf-ubuntu-mono-nerd ttf-nerd-fonts-symbols-common
+yay -S qtile-extras-git ttf-nerd-fonts-symbols-2048-em-mono ttf-ubuntu-mono-nerd ttf-nerd-fonts-symbols-common
 
 cd $HOME
 # Instala temas para el menu de aplicaciones rofi

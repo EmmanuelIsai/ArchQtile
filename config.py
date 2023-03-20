@@ -41,12 +41,12 @@ terminal = "alacritty"
 
 # Modificaciones
 # NOTA: Antes de ejecutar esta configuracion, ejecuta primero
-# 1packages.sh y 2configextras.sh o bien asegurate de tener los
-# paquetes y aplicaciones listadas en ambos script
+# 1packages.sh o bien asegurate de tener los
+# paquetes y aplicaciones listadas en el script
 
 # Configurar antes de ejecutar el archivo .py
 #============================================
-disp_red="enp0s3" # Cambiar el nombre del dispositivo de red
+#disp_red="enp0s3" # Cambiar el nombre del dispositivo de red
 user="von" # Nombre de usuario del dispositivo
 #============================================
 
@@ -57,7 +57,7 @@ colores = temas.ArchBlue()
 
 ## barra superior
 fuente_pred = "Ubuntu Mono Nerd Font"
-tamanobarra = 24
+tamanobarra = 30
 tamano_fuente = 16
 ## grupo de escritorios
 tamano_iconos=20
@@ -77,7 +77,7 @@ path_op = {
 powerline = {
     "decorations":[
         PowerLineDecoration(
-        path=path_op[5],
+        path=path_op[4],
         )
     ]
 }
@@ -133,7 +133,7 @@ def show_power_menu(qtile):
             height=0.5,
             highlight="A00000",
             mouse_callbacks={
-                "Button1": lazy.shutdown()
+                "Button1": lazy.spawn("poweroff")
             }
         ),
         PopupText(
@@ -144,6 +144,7 @@ def show_power_menu(qtile):
             height=0.2,
             h_align="center",
 	    foreground=colores["color_inactivo"],
+	    fontsize=tamano_fuente,
         ),
         PopupText(
             text="Reboot",
@@ -153,6 +154,7 @@ def show_power_menu(qtile):
             height=0.2,
             h_align="center",
 	    foreground=colores["color_inactivo"],
+	    fontsize=tamano_fuente,
         ),
         PopupText(
             text="Shutdown",
@@ -162,6 +164,7 @@ def show_power_menu(qtile):
             height=0.2,
             h_align="center",
 	    foreground=colores["color_inactivo"],
+	    fontsie=tamano_fuente,
         ),
     ]
 
@@ -462,7 +465,7 @@ screens = [
             ],
             size = tamanobarra,
             background = colores['colorbarra'],
-            opacity=1,
+            opacity=0.85,
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
@@ -518,7 +521,8 @@ wmname = "LG3D"
 auto = [
     #"bash /home/"+user+"/.screenlayout/resolucion.sh", # configuracion para ajustar la resolucion de VirtualMachine
     "nitrogen --random /home/"+user+"/Imagenes --set-zoom-fill &",
-    "nm-applet &"
+    "nm-applet &",
+    "picom &"
 ]
 
 for x in auto:

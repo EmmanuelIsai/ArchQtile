@@ -29,6 +29,13 @@ mv shutdown.png .iconos/
 mv lock.png .iconos/
 mv reboot.png .iconos/
 
+mkdir ~/.config/alacritty/
+curl -O https://gitlab.com/dwt1/dotfiles/-/raw/master/.config/alacritty/alacritty.yml
+mv alacritty.yml .config/alacritty/ 
+
+mkdir ~/.config/picom/
+cp /etc/xdg/picom.conf ~/.config/picom/
+
 cd $HOME
 git clone https://aur.archlinux.org/yay.git
 cd yay
@@ -39,7 +46,7 @@ cd $HOME
 sudo pacman -Syu
 yay -Syu
 # Instala qtile extras para agregar modificaciones visuales a qtile
-yay -S qtile-extras-git ttf-nerd-fonts-symbols-2048-em-mono ttf-ubuntu-mono-nerd ttf-nerd-fonts-symbols-common
+yay qtile-extras-git ttf-nerd-fonts-symbols-2048-em-mono ttf-ubuntu-mono-nerd ttf-nerd-fonts-symbols-common
 
 cd $HOME
 # Instala temas para el menu de aplicaciones rofi

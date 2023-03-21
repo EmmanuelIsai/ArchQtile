@@ -53,7 +53,7 @@ user="von" # Nombre de usuario del dispositivo
 # Colores
 # Temas de colores disponibles: TokyoNight, ArchRed, ArchBlue, ArchCold,
 # TokyoNight2
-colores = temas.TokyoNight()
+colores = temas.ArchBlue()
 
 ## barra superior
 fuente_pred = "Ubuntu Mono Nerd Font"
@@ -77,7 +77,7 @@ path_op = {
 powerline = {
     "decorations":[
         PowerLineDecoration(
-        path=path_op[4],
+        path=path_op[1],
         )
     ]
 }
@@ -164,7 +164,7 @@ def show_power_menu(qtile):
             height=0.2,
             h_align="center",
 	    foreground=colores["color_inactivo"],
-	    fontsie=tamano_fuente,
+	    fontsize=tamano_fuente,
         ),
     ]
 
@@ -240,8 +240,8 @@ keys = [
     Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10%-")),
 
     # Captura de pantalla
-    Key([mod, "control"], "s", lazy.spawn("scrot")),
-    Key([mod, "shift"], "s", lazy.spawn("scrot -s -f")),
+    Key([mod, "control"], "s", lazy.spawn("flameshot gui")),
+    #Key([mod, "shift"], "s", lazy.spawn("scrot -s -f")),
 
     # Muestra menu flotante de apagado
     Key([mod, "shift"], "q", lazy.function(show_power_menu)),
@@ -505,7 +505,7 @@ wmname = "LG3D"
 
 auto = [
     #"bash /home/"+user+"/.screenlayout/resolucion.sh", # configuracion para ajustar la resolucion de VirtualMachine
-    "nitrogen --random /home/"+user+"/Imagenes --set-zoom-fill &",
+    "nitrogen --random /home/"+user+"/Imagenes/Wallpaper/ --set-zoom-fill &",
     "nm-applet &",
     "picom &",
     "cbatticon -u 5 &",

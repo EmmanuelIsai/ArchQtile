@@ -9,16 +9,16 @@ sudo pacman -S firefox rofi which nitrogen pipewire ttf-dejavu
 sudo pacman -S ttf-liberation noto-fonts pavucontrol pamixer arandr
 sudo pacman -S ntfs-3g network-manager-applet xorg-xinit base-devel
 sudo pacman -S git pcmanfm glib2 gvfs lxappearance picom alacritty curl
-sudo pacman -S scrot python-psutil papirus-icon-theme gtk3 arc-gtk-theme
+sudo pacman -S python-psutil papirus-icon-theme gtk3 arc-gtk-theme
 sudo pacman -S lightdm lightdm-gtk-greeter xorg-server-xephyr brightnessctl
-sudo pacman -S acpi cbatticon volumeicon udiskie
+sudo pacman -S acpi cbatticon volumeicon udiskie viewnior flameshot xreader
 
-mkdir Imagenes
+mkdir Imagenes/Wallpaper/
 curl -O https://r4.wallpaperflare.com/wallpaper/625/89/275/archlinux-digital-art-linux-arch-linux-tech-hd-wallpaper-1f0cb881ced8a6f444c7620593386e99.jpg
-mv archlinux-digital-art-linux-arch-linux-tech-hd-wallpaper-1f0cb881ced8a6f444c7620593386e99.jpg Imagenes
+mv archlinux-digital-art-linux-arch-linux-tech-hd-wallpaper-1f0cb881ced8a6f444c7620593386e99.jpg Imagenes/Wallpaper
 curl -O https://images2.alphacoders.com/122/1224122.png
 sudo cp 1224122.png /usr/share/pixmaps/ 
-mv 1224122.png Imagenes
+mv 1224122.png Imagenes/Wallpaper/
 
 mkdir .iconos
 curl -O https://img.icons8.com/material/96/FFFFFF/shutdown--v1.png

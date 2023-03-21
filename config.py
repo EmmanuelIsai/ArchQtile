@@ -175,7 +175,7 @@ def show_power_menu(qtile):
         controls=controls,
         background=colores['colorfgg1'],
         initial_focus=None,
-	opacity=0.5,
+	opacity=0.8,
     )
 
     layout.show(centered=True)

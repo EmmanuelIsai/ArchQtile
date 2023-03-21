@@ -11,7 +11,7 @@ sudo pacman -S ntfs-3g network-manager-applet xorg-xinit base-devel
 sudo pacman -S git pcmanfm glib2 gvfs lxappearance picom alacritty curl
 sudo pacman -S python-psutil papirus-icon-theme gtk3 arc-gtk-theme
 sudo pacman -S lightdm lightdm-gtk-greeter xorg-server-xephyr brightnessctl
-sudo pacman -S acpi cbatticon volumeicon udiskie viewnior flameshot xreader
+sudo pacman -S acpi cbatticon udiskie viewnior flameshot xreader
 
 mkdir Imagenes/Wallpaper/
 curl -O https://r4.wallpaperflare.com/wallpaper/625/89/275/archlinux-digital-art-linux-arch-linux-tech-hd-wallpaper-1f0cb881ced8a6f444c7620593386e99.jpg
@@ -48,6 +48,7 @@ sudo pacman -Syu
 yay -Syu
 # Instala qtile extras para agregar modificaciones visuales a qtile
 yay -S qtile-extras-git ttf-nerd-fonts-symbols-2048-em-mono ttf-ubuntu-mono-nerd ttf-nerd-fonts-symbols-common
+yay -S pa-applet-git
 
 cd $HOME
 # Instala temas para el menu de aplicaciones rofi

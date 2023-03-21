@@ -25,6 +25,7 @@
 # SOFTWARE.
 
 import os
+from getpass import getuser
 import temas
 
 from qtile_extras import widget
@@ -47,7 +48,7 @@ terminal = "alacritty"
 # Configurar antes de ejecutar el archivo .py
 #============================================
 #disp_red="enp0s3" # Cambiar el nombre del dispositivo de red
-user="von" # Nombre de usuario del dispositivo
+user=getuser() # Nombre de usuario del dispositivo
 #============================================
 
 # Colores
@@ -428,17 +429,17 @@ screens = [
 
                 # GRUPO 4
                 #===========================================================
-		        widget.Systray(
+		widget.Systray(
                     icon_size=tamano_iconos,
                 ),
 
-                widget.PulseVolume(
-                    foreground=colores['colordetexto1'],
-                    #background=colores['colorbgg3'],
-                    limit_max_volume=True,
-                    fontsize=tamano_fuente,
-		            **powerline,
-                ),
+                #widget.PulseVolume(
+                #    foreground=colores['colordetexto1'],
+                #    #background=colores['colorbgg3'],
+                #    limit_max_volume=True,
+                #    fontsize=tamano_fuente,
+		#            **powerline,
+                #),
 
                 widget.QuickExit(
                     default_text='[X]',
@@ -510,7 +511,7 @@ auto = [
     "picom &",
     "cbatticon -u 5 &",
     "udiskie -n -s -m flat &",
-    "volumeicon &",
+    "pa-applet --disable-key-grabbing &",
 ]
 
 for x in auto:

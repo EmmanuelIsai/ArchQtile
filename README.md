@@ -10,4 +10,5 @@ El archivo `config.py` contiene la configuracion del gestor de ventanas Qtile pa
 Por agregar:
 - Configuraciones, iconos y notificaciones de bluetooth
 - Slider de brillo
+- Menu de atajos
 
